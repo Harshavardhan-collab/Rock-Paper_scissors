@@ -1,86 +1,70 @@
-let boxes = document.querySelectorAll(".box")
-let myrestt = document.querySelector("#myrest")
-let newgame = document.querySelector("#mygame")
-let msgcontainer = document.querySelector(".msg")
-let msg = document.querySelector("#message")
+let userchoice=document.querySelector("#userchoice")
+let playbtn=document.querySelector("#play")
+let message=document.querySelector("#message")
+playbtn.addEventListener("click",()=>{
+  let userinp= userchoice.value.trim().toLowerCase();
+  const choices=["rock","paper","scissors"];
+  if(!choices.includes(userinp)){
+    message.textContent=`please choose rock or paper or scissors`;
+    return ;
+    
+  }
+  let computerChoice = choices[Math.floor(Math.random() * choices.length)];
+  let result="";
+  if(userinp === computerChoice){
+    result="Its draw .you want play again";
+    
+  }
+  else if((userinp === "rock" && computerChoice === "scissors")||
+  (userinp==="paper" && computerChoice=== "rock")||
+  (userinp === "scissors" && computerChoice === "paper")){
+   result= "Congratulations!. You won the game";
+   triggerConfetti();
+  }
+  else{
+    result="You lose!";
+  }
+  message.textContent = `You chose ${userinp.charAt(0).toUpperCase() + userinp.slice(1)}. Computer chose ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}. ${result}`;
+   
+  
 
-
-let turnO = true;
-
-const winpatterns = [
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [3, 4, 5],
-    [6, 7, 8],
-];
-const resetgame = () => {
-    turnO = true;
-    enableBoxes();
-    msgcontainer.classList.add("hide")
-}
-
-
-
-boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-        console.log("button wass clicked");
-        // box.innerText="abc";
-        if (turnO) {
-            box.innerText = "O";
-            turnO = false;
-
-        } else {
-            box.innerText = "X";
-            turnO = true;
-        }
-        box.disabled = true;
-        checkwinner();
-    });
+  
 });
 
-const enableBoxes = () => {
-    for (let box of boxes) {
-        box.disabled = false;
-        box.innerText = "";
-    }
+
+function triggerConfetti() {
+  const confettiCount = 100; // Number of confetti pieces to generate
+  const container = document.body; // We will append confetti to the body
+
+  for (let i = 0; i < confettiCount; i++) {
+    const confetti = document.createElement('div'); // Create a new div element
+    confetti.classList.add('confetti'); // Add the "confetti" class to the div
+    container.appendChild(confetti); // Append the confetti element to the body
+
+    // Randomly set a position for each confetti piece
+    confetti.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+    confetti.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random duration for falling
+    confetti.style.animationDelay = `${Math.random() * 2}s`; // Random delay before falling
+  }
 }
 
-const disableBoxes = () => {
-    for (let box of boxes) {
-        box.disabled = true;
-    }
-};
-
-const showwinner = (Winner) => {
-    message.textContent = `Congratulations , Winner is ${Winner}`;
-    msgcontainer.classList.remove("hide");
-    disableBoxes();
-}
 
 
 
 
-const checkwinner = () => {
-    for (patterns of winpatterns) {
-        let pos1val = boxes[patterns[0]].innerText;
-        let pos2val = boxes[patterns[1]].innerText;
-        let pos3val = boxes[patterns[2]].innerText;
 
 
-        if (pos1val != "" && pos2val != "" && pos3val != "") {
-            if (pos1val === pos2val && pos2val === pos3val) {
-                console.log("Winner");
-                showwinner(pos1val);
-            }
-        }
-    }
 
 
-}
 
-newgame.addEventListener("click", resetgame);
-myrest.addEventListener("click", resetgame)
+
+
+
+
+
+
+
+
+
+
+
